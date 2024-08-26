@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>ListStudents</title>
+</head>
+<body>
+<h3>Student List</h3>
+<p>
+    <a th:href="@{/students/create}">
+        Add new student
+    </a>
+</p>
+<p>
+    <a th:href="@{/classes}">
+        Classes
+    </a>
+</p>
+<div style="margin-bottom: 10px; margin-left: 110px">
+    <form th:action="@{/students/search}" method="get">
+        <label><input type="text" name="search" th:value="${search}" placeholder="Tìm kiếm..."></label>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<div class="notify">
+    <div th:if="${success}">
+        <span th:text="${success}"></span>
+    </div>
+</div>
+
+<table id = "students">
+    <thead>
+    <tr>
+        <th>Fist Name</th>
+        <th>Last Name</th>
+        <th>Dob</th>
+        <th>Address</th>
+        <th>Mark</th>
+        <th>Image</th>
+        <th>Class</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s,sStatus : ${students}">
+        <td th:text="${s.getFirstName()}"></td>
+        <td th:text="${s.getLastName()}"></td>
+        <td th:text="${s.getDob()}"></td>
+        <td th:text="${s.getAddress()}"></td>
+        <td th:text="${s.getMark()}"></td>
+        <td><img style="width: 100px; height: 100px" th:src="@{'/image/'+${s.getImage()}}"></td>
+        <th:block th:if="${s.getClassStudent() != null}">
+            <td th:text="${s.getClassStudent().getClassName()}"></td>
+        </th:block>
+        <th:block th:unless="${s.getClassStudent() != null}">
+            <td>Null</td>
+        </th:block>
+        <td><a th:href="@{/students/{id}/edit(id=${s.getId()})}">edit</a></td>
+        <td><a th:href="@{/students/{id}/delete(id=${s.getId()})}">delete</a></td>
+        <td><a th:href="@{/students/{id}/view(id=${s.getId()})}">view</a></td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a class="btn btn-primary" th:if="${students.hasPrevious()}"
+       th:href="@{/students/search(page=${students.number - 1}, search=${search})}">Previous</a>
+    <span th:text="${students.number + 1}"></span> | <span th:text="${students.totalPages}"></span>
+    <a class="btn btn-primary" th:if="${students.hasNext()}"
+       th:href="@{/students/search(page=${students.number + 1},  search=${search})}">Next</a>
+</div>
+<table >
+    <tr>
+        <th>Name</th>
+        <th>Number</th>
+    </tr>
+    <tr th:each="c,cStatus: ${classStudentDTOS}">
+        <td th:text="${c.getClassName()}"></td>
+        <td th:text="${c.getNumber()}"></td>
+    </tr>
+</table>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

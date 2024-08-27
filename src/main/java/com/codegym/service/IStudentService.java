@@ -12,5 +12,5 @@ public interface IStudentService extends IGenerateService<Student>{
 
     Page<Student> findByLastNameContaining(String lastName, Pageable pageable);
 
-
+    public Student saveStudent(Student student);
 }

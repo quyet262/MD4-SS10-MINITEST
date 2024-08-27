@@ -51,4 +51,9 @@ public class StudentService implements IStudentService {
     public Student findStudentById(Long id) {
         return studentRepository.findById(id).get();
     }
+
+    @Override
+    public Student saveStudent(Student student) {
+        return studentRepository.save(student);
+    }
 }
